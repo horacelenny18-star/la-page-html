@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Saisie Étudiant - CIEL</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+   
+</head>
+<body>
+
+<div class="container">
+    <div class="form-container">
+        <h2 class="h5 text-center mb-4 text-white">NOUVELLE_ENTREE.EXE</h2>
+        
+        <div class="mb-3">
+            <label>NOM</label>
+            <input type="text" class="form-control" id="nom_f">
+        </div>
+        
+        <div class="mb-3">
+            <label>PRENOM</label>
+            <input type="text" class="form-control" id="prenom_f">
+        </div>
+        
+        <div class="mb-4">
+            <label>MAIL</label>
+            <input type="email" class="form-control" id="mail_f">
+        </div>
+        
+        <div class="d-grid gap-2">
+            <button class="btn btn-save" onclick="envoiDonnees()">VALIDER_INSCRIPTION</button>
+            <button class="btn btn-outline-secondary btn-sm" onclick="location.href='index.html'">RETOUR</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const URL_POST = 'http://192.168.1.224/ciel2027/api/etudiants.php';
+
+    function envoiDonnees() {
+        const n = document.getElementById("nom_f").value;
+        const p = document.getElementById("prenom_f").value;
+        const m = document.getElementById("mail_f").value;
+
+        if (!n || !p || !m) {
+            return alert("ERREUR : Champs incomplets.");
+        }
+
+        const data = { nom: n, prenom: p, email: m };
+
+        fetch(URL_POST, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(res => {
+            if (res.ok) {
+                window.location.href = 'index.html';
+            } else {
+                alert("ERREUR_SERVEUR");
+            }
+        })
+        .catch(err => console.log("Fail:", err));
+    }
+</script>
+
+</body>
+</html>
